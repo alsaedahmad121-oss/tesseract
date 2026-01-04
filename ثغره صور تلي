@@ -1,0 +1,28 @@
+gh repo clone tesseract-ocr/tesseractimport requests
+from PIL import Image
+import pytesseract
+from io import BytesIO
+
+# ===== https://t.me/c/1014757979/224 =====
+image_url = "https://example.com/image.jpg"
+# =============================
+
+try:
+    # تحميل الصورة من الرابط
+    response = requests.get(image_url)
+    response.raise_for_status()
+
+    # فتح الصورة
+    image = Image.open(BytesIO(response.content))
+
+    # استخراج النص (عربي + إنجليزي)
+    text = pytesseract.image_to_string(image, lang="ara+eng")
+
+    print("📄 النص المستخرج من الصورة:")
+    print("-" * 40)
+    print(text)
+    print("-" * 40)
+
+except Exception as e:
+    print("❌ صار خطأ:")
+    print(e)
